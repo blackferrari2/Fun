@@ -1,21 +1,7 @@
 {
-	"name": "Fun-test",
+	"name": "Fun",
 	
 	"tree": {
-		"$className": "DataModel",
-
-		"ReplicatedStorage": {
-			"$className": "ReplicatedStorage",
-
-			"Packages": {
-				"$className": "Folder",
-				"$ignoreUnknownInstances": true,
-
-				"Fun": {
-					"$path": "final.project.json",
-					"$ignoreUnknownInstances": true
-				}
-			}
-		}
+		"$path": "src"
 	}
 }
