@@ -1,5 +1,10 @@
 local TweenService = game:GetService("TweenService")
 
+local packages = script.Parent.Parent
+
+local Signal = require(packages.Signal)
+local FixedUpdate = require(packages.FixedUpdate)
+
 local Rotation = {}
 Rotation.__index = Rotation
 
@@ -8,7 +13,8 @@ Rotation.__index = Rotation
 type self = {
     target: any,
     offset: CFrameValue,
-	loopThread: thread?,
+    update: FixedUpdate.FixedUpdate?,
+    updateConnection: Signal.Connection?,
 }
 
 export type Rotation = typeof(setmetatable({} :: self, Rotation))
@@ -45,21 +51,29 @@ function Rotation.next(self: Rotation)
 end
 
 function Rotation.loop(self: Rotation, rate: number)
-    rate = rate or 0.1
+    if self.update then
+        return
+    end
 
-	-- TODO: use fixedupdate
-	self.loopThread = task.spawn(function()
-		while true do
-			self:next()
-			task.wait(rate)
-		end
-	end)
+    rate = rate or 1 / 60
+
+    local update = FixedUpdate.new(rate)
+
+    self.update = update
+    self.updateConnection = update.heartbeat:Connect(function()
+        self:next()
+    end)
 end
 
 function Rotation.stop(self: Rotation)
-    if self.loopThread then
-        task.cancel(self.loopThread)
-        self.loopThread = nil
+    if self.update then
+        self.update:destroy()
+        self.update = nil
+    end
+
+    if self.updateConnection then
+        self.updateConnection:Disconnect()
+        self.updateConnection = nil
     end
 end
 
