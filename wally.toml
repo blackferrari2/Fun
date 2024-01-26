@@ -1,0 +1,14 @@
+[package]
+name = "blackferrari2/fun"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+description = "Effects!"
+
+exclude = [
+    "aftman.toml", 
+    "README.md",
+    "test.project.json"
+]
+
+[dependencies]
