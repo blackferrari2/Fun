@@ -28,6 +28,16 @@ function Random.SaturatedColor(): Color3
     )
 end
 
+function Random.pick(from: {any}): any?
+    if #from < 1 then
+        return nil
+    end
+
+    local index = from[Random.Generator:NextInteger(1, #from)]
+
+    return from[index]
+end
+
 -------------------
 
 return Random
