@@ -57,7 +57,11 @@ end
 
 function Shake.setPower(self: Shake, to: number, info: TweenInfo?): Tween?
 	if info then
-		return TweenService:Create(self.power, info, {Value = to})
+		local tween = TweenService:Create(self.power, info, {Value = to})
+		
+		tween:Play()
+
+		return tween
 	end
 
 	self.power.Value = to
