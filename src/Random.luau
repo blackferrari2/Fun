@@ -4,15 +4,15 @@ local Random = {
 
 -------------------
 
-function Random.CFrame(): CFrame
+function Random.cframe(): CFrame
     return CFrame.lookAt(Vector3.zero, Random.Generator:NextUnitVector())
 end
 
-function Random.Vector(): Vector3
+function Random.vector(): Vector3
     return Random.Generator:NextUnitVector()
 end
 
-function Random.Color(): Color3
+function Random.color(): Color3
     return Color3.new(
         Random.Generator:NextNumber(0, 1),
         Random.Generator:NextNumber(0, 1),
@@ -20,7 +20,7 @@ function Random.Color(): Color3
     )
 end
 
-function Random.SaturatedColor(): Color3
+function Random.saturedColor(): Color3
     return Color3.new(
         Random.Generator:NextInteger(0, 1),
         Random.Generator:NextInteger(0, 1),
