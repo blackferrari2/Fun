@@ -33,7 +33,7 @@ function Random.pick(from: {any}): any?
         return nil
     end
 
-    local index = from[Random.Generator:NextInteger(1, #from)]
+    local index = Random.Generator:NextInteger(1, #from)
 
     return from[index]
 end
