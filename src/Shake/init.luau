@@ -66,7 +66,7 @@ function Shake.setPower(self: Shake, to: number, info: TweenInfo?): Tween?
 end
 
 function Shake.next(self: Shake)
-	local offset = Random.Vector() * self.power.Value
+	local offset = Random.vector() * self.power.Value
 	local new = self.operations:next(offset)
 
 	self.operations:apply(new)
