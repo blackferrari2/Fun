@@ -10,7 +10,8 @@ UDim2Operations.__index = UDim2Operations
 type self = {
     target: any,
     propertyName: string,
-    previousStep: UDim2,
+    currentOffset: UDim2,
+    offsetApplied: UDim2,
 }
 
 export type UDim2Operations = typeof(setmetatable({} :: self, UDim2Operations))
@@ -21,7 +22,8 @@ function UDim2Operations.new(target: Instance, propertyName: string?): UDim2Oper
     local self = {
         target = target,
         propertyName = propertyName or UDim2Operations.PropertyName,
-        previousStep = UDim2Operations.Identity,
+        offsetApplied = UDim2Operations.Identity,
+        currentOffset = UDim2Operations.Identity,
     }
 
     setmetatable(self, UDim2Operations)
@@ -30,16 +32,17 @@ function UDim2Operations.new(target: Instance, propertyName: string?): UDim2Oper
 end
 
 function UDim2Operations.getOrigin(self: UDim2Operations): UDim2
-    return self.target[self.PropertyName] - self.previousStep
+    return self.target[self.propertyName] - self.offsetApplied
 end
 
 function UDim2Operations.next(self: UDim2Operations, offset: UDim2): UDim2
-    return self:getOrigin() * offset
+    self.currentOffset = offset
+    return self:getOrigin() + offset
 end
 
-function UDim2Operations.apply(self: UDim2Operations, udim2: UDim2)
-    self.target[self.PropertyName] = udim2
-    self.previousStep = udim2
+function UDim2Operations.apply(self: UDim2Operations, new: UDim2)
+    self.target[self.propertyName] = new
+    self.offsetApplied = self.currentOffset
 end
 
 -------------------

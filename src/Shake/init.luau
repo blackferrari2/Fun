@@ -32,7 +32,7 @@ local ERROR_INVALID_MODE = "Mode %s is invalid."
 
 -------------------
 
-function Shake.new(target: Instance, power: number?, mode: Mode?): Shake
+function Shake.new(target: Instance, power: number?, mode: Mode?, propertyName: string?): Shake
 	mode = mode or Shake.Modes.Vector3
 
 	local operations = script:FindFirstChild(mode)
@@ -45,7 +45,7 @@ function Shake.new(target: Instance, power: number?, mode: Mode?): Shake
 		target = target,
 		power = Instance.new("NumberValue"),
 		mode = mode,
-		operations = require(operations).new(target),
+		operations = require(operations).new(target, propertyName),
 	}
 	
 	self.power.Value = power or 1

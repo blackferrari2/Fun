@@ -10,7 +10,8 @@ CFrameOperations.__index = CFrameOperations
 type self = {
     target: any,
     propertyName: string,
-    previousStep: CFrame,
+    currentOffset: CFrame,
+    offsetApplied: CFrame,
 }
 
 export type CFrameOperations = typeof(setmetatable({} :: self, CFrameOperations))
@@ -21,7 +22,8 @@ function CFrameOperations.new(target: Instance, propertyName: string?): CFrameOp
     local self = {
         target = target,
         propertyName = propertyName or CFrameOperations.PropertyName,
-        previousStep = CFrameOperations.Identity,
+        offsetApplied = CFrameOperations.Identity,
+        currentOffset = CFrameOperations.Identity,
     }
 
     setmetatable(self, CFrameOperations)
@@ -30,19 +32,20 @@ function CFrameOperations.new(target: Instance, propertyName: string?): CFrameOp
 end
 
 function CFrameOperations.getOrigin(self: CFrameOperations): CFrame
-    return self.target[self.PropertyName] * self.previousStep:Inverse()
+    return self.target[self.propertyName] * self.offsetApplied:Inverse()
 end
 
 function CFrameOperations.next(self: CFrameOperations, offset: Vector3): CFrame
-    local new = CFrame.new(offset.X, offset.Y, offset.Z)
+    local convertedOffset = CFrame.new(offset)
 
-    self.previousStep = new
+    self.currentOffset = convertedOffset
 
-    return self:getOrigin() * new
+    return self:getOrigin() * convertedOffset
 end
 
-function CFrameOperations.apply(self: CFrameOperations, cframe: CFrame)
-    self.target[self.PropertyName] = cframe
+function CFrameOperations.apply(self: CFrameOperations, new: CFrame)
+    self.target[self.propertyName] = new
+    self.offsetApplied = self.currentOffset
 end
 
 -------------------
